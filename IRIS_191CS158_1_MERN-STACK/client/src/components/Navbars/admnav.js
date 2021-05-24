@@ -1,7 +1,28 @@
+import { useEffect, useState } from "react";
 import { Link} from "react-router-dom";
+import { getadminDetails, logout } from "../../helpers/admins";
 
 
-const AdminNav = ({id}) => {
+const AdminNav = () => {
+
+    const [admin, setAdmin] = useState({});
+    useEffect(() => {
+        getadminDetails().then(res => {
+            console.log(res);
+            setAdmin(res.data);
+            console.log(admin);
+            console.log("I am here");
+        })
+    },[admin]);
+
+    const onLogout = (e) =>{
+        logout().then(response=>{
+            console.log(response);
+            console.log("You are going to logout");
+            console.log(response.message);
+        });
+      }
+    
     return (  
         <div className="adminnav">
             <nav className="navbar fixed-top navbar-expand-lg navbar-light bg-primary">
@@ -10,24 +31,20 @@ const AdminNav = ({id}) => {
                         <span className="navbar-toggler-icon"></span>
                     </button>
                     <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-                        <Link className="navbar-brand" to={"/dashboard/admin/"+id}>Tech Clubs</Link>
-                        <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li className= "nav-item "><Link className="nav-link active" to={"/allUsers/"+id}>Users</Link></li>
-                            <li className= "nav-item "><Link className="nav-link" to={"/addClub/"+id}>Add Club</Link></li>
-                        </ul>
+                        <Link className="navbar-brand" to="/dashboard/admin">Tech Clubs/Dashboard</Link>
                     </div>
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0 navbar-right">
-                    <li className="nav-item dropdown">
-                        <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {id}
-                        </a>
-                        <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a className="dropdown-item" href="#">Profile</a>
-                        <a className="dropdown-item" href="#">Change Password</a>
-                        <div className="dropdown-divider"></div>
-                        <a className="dropdown-item" href="#">Log Out</a>
-                        </div>
-                    </li>
+                        <li className="nav-item dropdown">
+                            <Link className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {admin.adminName}
+                            </Link>
+                            <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <Link className="dropdown-item" to="/admin/profile">Profile</Link>
+                                <Link className="dropdown-item" to="/admin/changePass">Change Password</Link>
+                            <div className="dropdown-divider"></div>
+                                <Link className="dropdown-item" to="/" onClick = {(e) => onLogout(e)}>Log Out</Link>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </nav>

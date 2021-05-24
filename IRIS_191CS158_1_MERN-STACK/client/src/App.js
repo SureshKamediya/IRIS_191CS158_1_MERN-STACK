@@ -19,11 +19,11 @@ function App() {
             <Route exact path= "/"><Register /></Route>
             <Route path= "/login"><Login /></Route>
             <Route exact path= "/adminlogin"><AdminLogin /></Route>
-            <Route path= "/dashboard/admin/:id"><DashAdmin /></Route>
-            <Route path = "/dashboard/convener/:id"><DashConvener /></Route>
-            <Route path = "/dashboard/member/:id"><DashMember /></Route>
-            <Route path = "/allUsers/:id"><AllUsers /></Route>
-            <Route path = "/addClub/:id"><NewClub /></Route>
+            <Route path= "/dashboard/admin"><DashAdmin /></Route>
+            <Route path = "/dashboard/convener"><DashConvener /></Route>
+            <Route path = "/dashboard/member"><DashMember /></Route>
+            <Route path = "/allUsers"><AllUsers /></Route>
+            <Route path = "/addClub"><NewClub /></Route>
             <Route path = "/clubMembers/:id"><ClubMembers /></Route>
           </Switch>
         </div>

@@ -3,6 +3,7 @@ const memberModel = require('../models/members');
 const itemModel = require('../models/items');
 const bcrypt = require('bcrypt');
 const { checkIfMemberExists } = require('../helpers/utils');
+const jwt = require('jsonwebtoken');
 
 module.exports = {
 
@@ -50,11 +51,16 @@ module.exports = {
             console.log(memberInfo);
             if (memberInfo) {
               if (bcrypt.compareSync(req.body.password, memberInfo.password)) {
+                const token = jwt.sign({id: memberInfo._id},
+                  req.app.get('secretKey'), { expiresIn: '1h' });
+                res.cookie('token', token, {
+                  maxAge: 1000 * 60 * 60, // 1 hour
+                });
                 res.json({
                   code: 1,
                   status: 'success',
                   message: 'Member found!!!',
-                  data: memberInfo,
+                  data: {member: memberInfo, token: token}
                 });
               }
               else {
@@ -229,6 +235,24 @@ module.exports = {
                 data: null,
               });
             }
+        });
+      },
+
+
+      getById: function(req, res, next) {
+        console.log(req.body);
+        memberModel.findById(req.body.memberId, function(err, memberInfo) {
+          if (err)
+            next(err);
+          else {
+            console.log(memberInfo);
+            res.json({
+              code: 1,
+              status: 'success',
+              message: 'Member found!!!',
+              data: memberInfo,
+            });
+          }
         });
       },
    

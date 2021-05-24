@@ -16,11 +16,6 @@ const ClubSchema = new Schema({
       default: null,
   },
 
-  clubMembersList: {
-    type: [Schema.Types.ObjectId],
-    ref: 'members',
-    default: [],
-  }
 });
 
 

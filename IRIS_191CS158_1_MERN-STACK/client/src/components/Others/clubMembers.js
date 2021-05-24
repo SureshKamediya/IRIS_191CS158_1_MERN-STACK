@@ -1,14 +1,15 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { getClubDetails, getClubMembersbyId } from "../../helpers/clubs";
+import { getClubDetails, getClubMemberbyId } from "../../helpers/clubs";
 import { getClubMembers } from "../../helpers/members";
+import AdminNav from "../Navbars/admnav";
 
 const ClubMembers = () => {
     
     const {id} = useParams();
     const [clubMembers, setClubMembers] = useState([]);
-    const [clubDetail, setClubDetail] = useState([]);
+    const [clubDetail, setClubDetail] = useState({});
     const [clubConvener, setClubConvener] = useState('');
     const [convenerName, setConvenerName] = useState('');
 
@@ -20,34 +21,36 @@ const ClubMembers = () => {
                 setClubMembers(data.clMembers);
             }
         });
+    },[id, clubMembers]);
 
+    useEffect(() => {
         getClubDetails(id).then(data =>{
             if(data.authenticated){
                 console.log(data.club);
                 console.log(data.club._id);
                 setClubDetail(data.club);
+                console.log(clubDetail);
             }
         });
+    },[id,clubDetail]);
 
+    useEffect(() => {
         if(clubDetail && clubDetail.convener){
-            getClubMembersbyId(clubDetail.convener).then(data => {
+            getClubMemberbyId(clubDetail.convener).then(data => {
                 if(data.authenticated){
                     console.log(data.member);
                     setConvenerName(data.member.userName);
                 }
             })
         }
-
-    });
-
+    },[clubDetail, convenerName]);
     
 
     
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(clubConvener);
-        const temp = clubConvener.split('-');
-        const memberId = temp[1];
+     const handleSubmit = (e) => {
+         e.preventDefault();
+         console.log(clubConvener);
+         const memberId = clubConvener;
 
         const urlnow = 'http://localhost:8082/members/convener/'+ memberId;
 
@@ -82,15 +85,13 @@ const ClubMembers = () => {
                 console.log(res.data.message);
             }
         });
-
-
-
-    }
+     }
 
 
     return (  
         <div className="clubmembers">
-            <h2 className = "text-center mb-5"> All {id} members</h2>
+            <AdminNav />
+            <h2 className = "text-center mt-5 mb-5"> All {id} members</h2>
             <div className="table mb-5">
                 <div className="table-header">
                     <div className="row">
@@ -101,7 +102,7 @@ const ClubMembers = () => {
                     </div>
                 </div>
                 <div className="table-body">
-                    {clubMembers.map((member,index) => {
+                    {clubMembers && clubMembers.map((member,index) => {
                         return(
                             <div className = "row"  key = {index}>
                                 <div className= "column">{member.userName}</div>
@@ -111,6 +112,7 @@ const ClubMembers = () => {
                             </div>
                         );
                     })}
+                    {!clubMembers && <div><h2>No members in this club till now</h2></div>}
                 </div>
             </div>
             <div className="container">               
@@ -123,12 +125,13 @@ const ClubMembers = () => {
                                         <label>Club Convener - {convenerName}</label>
                                         <select
                                             name = "clubobject"
-                                            className = "form-control" 
+                                            className = "form-control"
+                                            value = {clubConvener} 
                                             placeholder = {clubDetail.convener}
                                             onChange = {(e) => setClubConvener(e.target.value) } 
                                         >
                                             <option></option>
-                                            {clubMembers.map((member,index) => <option key={index}>{member.userName}-{member._id}</option>)}
+                                            {clubMembers && clubMembers.map((member,index) => <option key={index} value = {member._id}>{member.userName}-{member.email}</option>)}
                                         </select>
                                     </div>
                                     <button className="mb-0 mx-auto">Add Convener</button>

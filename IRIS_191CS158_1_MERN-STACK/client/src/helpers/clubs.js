@@ -51,7 +51,7 @@ export async function getClubDetails(clubName){
 }
 
 
-export async function getClubMembersbyId(objectId){
+export async function getClubMemberbyId(objectId){
 
     let urlOne = 'http://localhost:8082/clubs/member/'+objectId;
   

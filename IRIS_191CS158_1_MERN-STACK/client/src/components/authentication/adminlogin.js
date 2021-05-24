@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {Redirect} from 'react-router-dom';
-import axios from 'axios';
+import {login} from '../../helpers/admins';
 
 
 const AdminLogin = () => {
@@ -9,7 +9,6 @@ const AdminLogin = () => {
     const [password, setPassword] = useState('');
     const [isPending, setIsPending] = useState(false);
     const [redirects, setRedirects] = useState(false);
-    const [adminId, setAdminId] = useState([]);
 
      const handleSubmit = (e) => {
         e.preventDefault();
@@ -19,19 +18,18 @@ const AdminLogin = () => {
         };
         setIsPending(true);
 
-        axios
-        .post('http://localhost:8082/admins/login', admin)
-        .then(res => {
-            if(res.data.code){
+        
+        login(admin.email, admin.password).then(res => {
+            if(res.code){
                 console.log("Succesfully Logined");
                 setIsPending(false);
-                const adminInfo = res.data;
-                console.log(adminInfo);
-                setAdminId(adminInfo);
+                // const adminInfo = res.data;
+                // console.log(adminInfo);
+                // setAdminId(adminInfo);
                 setRedirects(true);  
             }
             else{
-                console.log(res.data.message);
+                console.log(res.message);
             }
         });
      }
@@ -77,7 +75,7 @@ const AdminLogin = () => {
          );
      }
      else{
-         return <Redirect to={"dashboard/admin/"+adminId.data._id}></Redirect>
+         return <Redirect to={"dashboard/admin"}></Redirect>
      }
 
     

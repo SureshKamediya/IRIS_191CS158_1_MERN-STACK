@@ -22,6 +22,7 @@ const ItemSchema = new Schema({
   image:{
     type: Schema.Types.ObjectId,
     ref: 'images',
+    default: null,
   }
 });
 

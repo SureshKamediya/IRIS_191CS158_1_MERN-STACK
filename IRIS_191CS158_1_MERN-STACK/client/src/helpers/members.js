@@ -12,6 +12,35 @@ const instance = axios.create({
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form- urlencoded';
 axios.defaults.crossDomain = true;
 
+
+export function setAuthToken(token){
+
+    if (token) {
+        // Apply authorization token to every request if logged in   
+        axios.defaults.headers.common['Authorization'] = token;
+      }
+    else{
+        delete axios.defaults.headers.common['Authorization'];
+    }
+  };
+  
+  export async function login(email,password){
+  
+    const data = {
+        'email':email,
+        'password':password
+    };
+    const resp = await instance.post('/members/login',querystring.stringify(data),{withCredentials:true});
+    return resp.data;
+  };
+  
+  export async function logout(){
+     
+    const resp = await axios.get('http://localhost:8082/members/logout',{withCredentials:true});
+    return resp.data;
+  };
+
+
 export async function getAllMembers(){
 
   let urlOne = 'http://localhost:8082/members/allMembers';
@@ -42,6 +71,14 @@ export async function getClubMembers(id){
   else
       membersData.authenticated = 1;
   return membersData;
+}
+
+
+export async function getmemberDetails(){
+
+    const resp = await axios.get('http://localhost:8082/request/member',{withCredentials:true});
+    console.log(resp.data);
+    return resp.data;
 }
 
 

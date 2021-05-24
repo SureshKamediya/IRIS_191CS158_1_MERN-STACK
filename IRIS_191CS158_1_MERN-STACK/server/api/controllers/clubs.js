@@ -82,24 +82,24 @@ module.exports = {
         });
       },
 
-      updateClubMembersDetails: function(req,res,next) {
-        console.log("I am here");
-        console.log(req.params.clubName);
-        clubModel.updateOne({clubName:req.body.clubName},{clubMembersList:req.body.clubMembersList}, function(err){
-            if(err){
-              console.log(err);
-            }
-            else{
-              console.log(req.params.clubId);
-              res.json({
-                code: 1,
-                status: 'success',
-                message: "We have updated the club Members List ",
-                data: null,
-              });
-            }
-        });
-      },
+      // updateClubMembersDetails: function(req,res,next) {
+      //   console.log("I am here");
+      //   console.log(req.params.clubName);
+      //   clubModel.updateOne({clubName:req.body.clubName},{clubMembersList:req.body.clubMembersList}, function(err){
+      //       if(err){
+      //         console.log(err);
+      //       }
+      //       else{
+      //         console.log(req.params.clubId);
+      //         res.json({
+      //           code: 1,
+      //           status: 'success',
+      //           message: "We have updated the club Members List ",
+      //           data: null,
+      //         });
+      //       }
+      //   });
+      // },
 
       updateClubConvener: function(req,res,next) {
         console.log("I am here");
@@ -147,22 +147,5 @@ module.exports = {
           }
         })
       },
-
-      updateConvener: function(req,res,next){
-        clubModel.updateOne({club:req.body.club}, {convener: req.body.convener}, function(err){
-            if(err){
-              console.log(err);
-            }
-            else{
-              res.json({
-                code: 1,
-                status: 'success',
-                message: "We have updated the club's convener",
-                data: null,
-              });
-            }
-        });
-      },
-
 
 }

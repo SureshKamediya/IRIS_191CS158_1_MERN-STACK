@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {Redirect} from 'react-router-dom';
-import axios from 'axios';
+import { login } from "../../helpers/members";
 
 
 const Login = () => {
@@ -10,7 +10,6 @@ const Login = () => {
     const [isPending, setIsPending] = useState(false);
     const [redirects1, setRedirects1] = useState(false);
     const [redirects2, setRedirects2] = useState(false);
-    const [memberId, setMemberId] = useState([]);
 
      const handleSubmit = (e) => {
         e.preventDefault();
@@ -20,15 +19,15 @@ const Login = () => {
         };
         setIsPending(true);
 
-        axios
-        .post('http://localhost:8082/members/login', member)
-        .then(res => {
-            if(res.data.code){
+        
+        login(member.email, member.password).then(res => {
+            if(res.code){
                 console.log("Succesfully Logined");
                 setIsPending(false);
-                const memberInfo = res.data;
-                setMemberId(memberInfo);
-                console.log(memberId);
+                console.log(res.data);
+                const memberInfo = res.data.member;
+                // setMemberId(memberInfo._id);
+                // console.log(memberId);
                 if(memberInfo.convener === true){
                     setRedirects1(true);
                 }
@@ -37,7 +36,7 @@ const Login = () => {
                 }
             }
             else{
-                console.log(res.data.message);
+                console.log(res.message);
             }
         });
      }
@@ -83,10 +82,10 @@ const Login = () => {
          );
      }
      else if(redirects1){
-         return <Redirect to={"dashboard/convener/"+memberId.data._id}></Redirect>
+         return <Redirect to={"dashboard/convener"}></Redirect>
      }
      else{
-         return <Redirect to={"dashboard/member/"+memberId.data._id}></Redirect>
+         return <Redirect to={"dashboard/member"}></Redirect>
      }
 
     
