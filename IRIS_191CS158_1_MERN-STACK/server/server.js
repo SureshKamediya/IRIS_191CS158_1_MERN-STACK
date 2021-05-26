@@ -7,6 +7,8 @@ const connectDB = require('./config/db');
 const members = require('./routes/members');
 const admins = require('./routes/admins');
 const clubs = require('./routes/clubs');
+const items = require('./routes/items');
+const requests = require('./routes/requests');
 const requestForUser = require('./routes/requestForUser');
 const requestForAdmin = require('./routes/requestForAdmin')
 const cookieParser = require('cookie-parser');
@@ -39,6 +41,8 @@ app.use(cors({ origin: true, credentials: true })); // cors
 app.use('/members',members);
 app.use('/admins',admins);
 app.use('/clubs', clubs);
+app.use('/items',items);
+app.use('/requests',requests);
 app.use('/request', validateMember, requestForUser);
 app.use('/adminDashboard',validateAdmin,requestForAdmin);
 

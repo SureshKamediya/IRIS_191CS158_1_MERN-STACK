@@ -203,7 +203,7 @@ module.exports = {
       updateMemberClub: function(req,res,next) {
         console.log("I am here");
         console.log(req.params.memberId);
-        memberModel.updateOne({_id:req.params.memberId},{club:req.body.club}, function(err){
+        memberModel.updateOne({_id:req.params.memberId},{club:req.body.club, convener:req.body.convener}, function(err){
             if(err){
               console.log(err);
             }
@@ -240,12 +240,10 @@ module.exports = {
 
 
       getById: function(req, res, next) {
-        console.log(req.body);
         memberModel.findById(req.body.memberId, function(err, memberInfo) {
           if (err)
             next(err);
           else {
-            console.log(memberInfo);
             res.json({
               code: 1,
               status: 'success',

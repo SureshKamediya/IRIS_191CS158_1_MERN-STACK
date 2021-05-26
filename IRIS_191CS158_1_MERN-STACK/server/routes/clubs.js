@@ -2,7 +2,6 @@
 const express = require('express');
 const router = express.Router();
 const clubController = require('../api/controllers/clubs');
-const { route } = require('./members');
 
 
 router.get('/allClubs',clubController.getAllClubs);

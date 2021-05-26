@@ -63,12 +63,10 @@ module.exports = {
       },
       
       getById: function(req, res, next) {
-        console.log(req.body);
         adminModel.findById(req.body.adminId, function(err, adminInfo) {
           if (err)
             next(err);
           else {
-            console.log(adminInfo);
             res.json({
               code: 1,
               status: 'success',

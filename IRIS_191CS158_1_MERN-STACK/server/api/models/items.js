@@ -15,15 +15,10 @@ const ItemSchema = new Schema({
       required: true,
   },
   club: {
-      type: Schema.Types.ObjectId,
-      ref: 'clubs',
+      type: String,
+      trim: true,
       required: true,
   },
-  image:{
-    type: Schema.Types.ObjectId,
-    ref: 'images',
-    default: null,
-  }
 });
 
 module.exports = mongoose.model('Item', ItemSchema);

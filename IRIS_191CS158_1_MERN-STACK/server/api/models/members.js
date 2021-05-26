@@ -35,6 +35,7 @@ const MemberSchema = new Schema({
   club:{
     type: String,
     trim: true,
+    default: '',
   },
   convener: {
     type: Boolean,
