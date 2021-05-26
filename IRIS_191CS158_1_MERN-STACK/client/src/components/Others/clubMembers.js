@@ -21,7 +21,7 @@ const ClubMembers = () => {
                 setClubMembers(data.clMembers);
             }
         });
-    },[id, clubMembers]);
+    },[clubMembers]);
 
     useEffect(() => {
         getClubDetails(id).then(data =>{
@@ -32,7 +32,7 @@ const ClubMembers = () => {
                 console.log(clubDetail);
             }
         });
-    },[id,clubDetail]);
+    },[clubDetail]);
 
     useEffect(() => {
         if(clubDetail && clubDetail.convener){
@@ -43,7 +43,7 @@ const ClubMembers = () => {
                 }
             })
         }
-    },[clubDetail, convenerName]);
+    },[clubDetail,convenerName]);
     
 
     

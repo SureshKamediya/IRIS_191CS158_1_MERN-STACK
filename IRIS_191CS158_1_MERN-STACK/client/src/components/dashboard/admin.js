@@ -2,18 +2,6 @@ import {NavLink} from 'react-router-dom';
 import AdminNav from '../Navbars/admnav';
 
 const DashAdmin = () => {
-    
-
-    
-     
-
-
-
-    
-
-    
-
-
     return (  
         <div className="dashadmin">
             <AdminNav />              

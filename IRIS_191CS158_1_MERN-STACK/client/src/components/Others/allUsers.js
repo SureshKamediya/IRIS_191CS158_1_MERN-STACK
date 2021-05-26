@@ -40,6 +40,7 @@ const AllUsers = () => {
         const urlnow = 'http://localhost:8082/members/'+ memberId;
         const member = {
             club: clubValue[index],
+            convener:false,
         }
         axios
         .patch(urlnow,member)
