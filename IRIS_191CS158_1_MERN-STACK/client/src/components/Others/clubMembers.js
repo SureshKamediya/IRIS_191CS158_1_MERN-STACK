@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
-import { getClubDetails, getClubMemberbyId } from "../../helpers/clubs";
+import { Redirect, useParams } from "react-router";
+import { getClubDetails} from "../../helpers/clubs";
 import { getClubMembers } from "../../helpers/members";
 import AdminNav from "../Navbars/admnav";
 
@@ -11,7 +11,7 @@ const ClubMembers = () => {
     const [clubMembers, setClubMembers] = useState([]);
     const [clubDetail, setClubDetail] = useState({});
     const [clubConvener, setClubConvener] = useState('');
-    const [convenerName, setConvenerName] = useState('');
+    const [reload, setReload] = useState(false);
 
     
     useEffect(() => {
@@ -21,7 +21,7 @@ const ClubMembers = () => {
                 setClubMembers(data.clMembers);
             }
         });
-    },[clubMembers]);
+    },[]);
 
     useEffect(() => {
         getClubDetails(id).then(data =>{
@@ -32,28 +32,51 @@ const ClubMembers = () => {
                 console.log(clubDetail);
             }
         });
-    },[clubDetail]);
+    },[]);
 
-    useEffect(() => {
-        if(clubDetail && clubDetail.convener){
-            getClubMemberbyId(clubDetail.convener).then(data => {
-                if(data.authenticated){
-                    console.log(data.member);
-                    setConvenerName(data.member.userName);
-                }
-            })
+
+    const tocheck = (clubConvener, conv) =>{
+        if(conv){
+            if(clubConvener !== ''){
+                return clubConvener;
+            }
+            else{
+                return conv;
+            }
         }
-    },[clubDetail,convenerName]);
+        else{
+            return clubConvener;
+        }
+    }
     
 
     
      const handleSubmit = (e) => {
-         e.preventDefault();
-         console.log(clubConvener);
-         const memberId = clubConvener;
+        e.preventDefault();
+        if(clubDetail.convener){
+            const urlnow = 'http://localhost:8082/members/'+ clubDetail.convener;
+            const memberdata = {
+                club: id,
+                convener:false,
+            }
+            axios
+            .patch(urlnow,memberdata)
+            .then(res => {
+                console.log(res);
+                if(res.data.code){
+                    console.log("He is removed from convener post.");
+                    setReload(true);
+                }
+                else{
+                    console.log(res.data.message);
+                }
+            });
+        }
 
+
+        console.log(clubConvener);
+        const memberId = clubConvener;
         const urlnow = 'http://localhost:8082/members/convener/'+ memberId;
-
         const member = {
             convener: true,
         }
@@ -68,25 +91,31 @@ const ClubMembers = () => {
                 console.log(res.data.message);
             }
         });
+
+
         const urlsecond = 'http://localhost:8082/clubs/convener/'+ id;
         const club = {
             clubName: id,
             convener: memberId,
         }
-
         axios
         .patch(urlsecond,club)
         .then(res => {
             console.log(res);
             if(res.data.code){
                 console.log("This Club details are updated successfully");
+                setReload(true);
             }
             else{
                 console.log(res.data.message);
             }
         });
+        setReload(false);
      }
 
+     if(reload){
+         <Redirect to ={"/clubMembers/"+id}></Redirect>
+     }
 
     return (  
         <div className="clubmembers">
@@ -122,11 +151,11 @@ const ClubMembers = () => {
                             <div className="card-body">
                                 <form onSubmit ={handleSubmit}>
                                     <div className="form-group">
-                                        <label>Club Convener - {convenerName}</label>
+                                        <label>Convener</label>
                                         <select
                                             name = "clubobject"
                                             className = "form-control"
-                                            value = {clubConvener} 
+                                            value = {tocheck(clubConvener, clubDetail.convener)} 
                                             placeholder = {clubDetail.convener}
                                             onChange = {(e) => setClubConvener(e.target.value) } 
                                         >
@@ -134,7 +163,7 @@ const ClubMembers = () => {
                                             {clubMembers && clubMembers.map((member,index) => <option key={index} value = {member._id}>{member.userName}-{member.email}</option>)}
                                         </select>
                                     </div>
-                                    <button className="mb-0 mx-auto">Add Convener</button>
+                                    <button className="mb-0 mx-auto">Change Convener</button>
                                 </form>
                             </div>
                         </div>

@@ -66,14 +66,48 @@ body {
   text-align: center;
 }
 
-button {
-  background-color: #0078e7;
-  color: #fff;
+ button {
+  padding: 0.5em  1em;
   font-size: 100%;
-  padding: 0.5em 1em;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #04AA6D;
   border: 1px solid #999;
   border: transparent;
   text-decoration: none;
   border-radius: 2px;
+} 
+
+
+button:hover {background-color: #3e8e41}
+
+button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
 }
 
+.btn {
+  padding: 0.5em  1em;
+  font-size: 100%;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #04AA6D;
+  border: 1px solid #999;
+  border: transparent;
+  text-decoration: none;
+  border-radius: 2px;
+} 
+
+
+.btn:hover {background-color: #3e8e41}
+
+.btn:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}

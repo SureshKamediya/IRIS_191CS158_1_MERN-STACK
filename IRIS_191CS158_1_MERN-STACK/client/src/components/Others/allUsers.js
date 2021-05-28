@@ -3,6 +3,7 @@ import { getAllClubs } from "../../helpers/clubs"
 import { getAllMembers } from "../../helpers/members";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Redirect } from "react-router";
 
 
 
@@ -10,7 +11,7 @@ const AllUsers = () => {
     const [allMembers,setAllMembers] = useState([]);
     const [allClubs, setAllClubs] = useState([]);
     const [clubValue, setClubValue] = useState([]);
-    const [memberClub, setMemberClub] = useState([]);
+    const [reload, setReload] = useState(false);
 
     useEffect(() => {
         getAllMembers().then(data =>{
@@ -19,7 +20,7 @@ const AllUsers = () => {
               setAllMembers(data.members);
             }
         });
-    },[allMembers]);
+    },[]);
 
     useEffect(()=> {
         getAllClubs().then(data =>{
@@ -28,34 +29,54 @@ const AllUsers = () => {
               setAllClubs(data.clubs);
             }
           });
-    },[allClubs]);
+    },[]);
 
 
-    const updateClubValue = (index,memberId) => e => {
+    const updateClubValue = (index,member) => (e) => {
+
+        if(member.convener === true){
+            const urlsecond = 'http://localhost:8082/clubs/convener/'+ member.club;
+            const club = {
+                clubName: member.club,
+                convener: null,
+            }
+            axios
+            .patch(urlsecond,club)
+            .then(res => {
+                console.log(res);
+                if(res.data.code){
+                    console.log("This convener thing of club is removed");
+                    setReload(true);
+                }
+                else{
+                    console.log(res.data.message);
+                }
+            });
+        }
+
+
         let newArr = clubValue;
         newArr[index] = e.target.value;
         setClubValue(newArr);
         console.log(clubValue[index]);
-
-        const urlnow = 'http://localhost:8082/members/'+ memberId;
-        const member = {
+        const urlnow = 'http://localhost:8082/members/'+ member._id;
+        const memberdata = {
             club: clubValue[index],
             convener:false,
         }
         axios
-        .patch(urlnow,member)
+        .patch(urlnow,memberdata)
         .then(res => {
             console.log(res);
             if(res.data.code){
                 console.log("This Club of the Member is changed respectively");
-                const newarray = memberClub;
-                newarray[index] = clubValue[index];
-                setMemberClub(newarray);
+                setReload(true);
             }
             else{
                 console.log(res.data.message);
             }
         });
+        setReload(false);
     }
 
     const tocheck = (index, member) =>{
@@ -70,6 +91,10 @@ const AllUsers = () => {
                 return member.club;
             }
         }
+    }
+
+    if(reload){
+        <Redirect to ="/allUsers"></Redirect>
     }
 
     return (
@@ -94,7 +119,7 @@ const AllUsers = () => {
                                 <div className="column">{member.contactNumber}</div>
                                 <select className= "column"
                                     value = {tocheck(index,member)}
-                                    onChange = {updateClubValue(index,member._id)}
+                                    onChange = {updateClubValue(index,member)}
                                 >
                                     <option></option>
                                     {allClubs && allClubs.map((club,index2) => <option key={index2}>{club.clubName}</option>)}

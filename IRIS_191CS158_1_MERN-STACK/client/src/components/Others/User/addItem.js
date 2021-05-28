@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { Redirect, useParams } from "react-router";
-import UserNav from "../../Navbars/memnav";
+import ConvNav from "../../Navbars/convnav";
 
 const NewItem = () => {
     const {id} = useParams();
@@ -38,7 +38,7 @@ const NewItem = () => {
     if(!redirects){
         return (  
             <div className="newitem">
-                <UserNav />
+                <ConvNav />
                 <h2 className="mt-5 text-center">Add New Item</h2>
                 <div className="container">               
                         <div className="row">

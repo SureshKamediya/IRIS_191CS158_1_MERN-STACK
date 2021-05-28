@@ -1,14 +1,18 @@
 import { useState } from "react";
-import {Redirect} from 'react-router-dom';
+import {NavLink, Redirect} from 'react-router-dom';
 import {login} from '../../helpers/admins';
+import { useAlert } from 'react-alert';
 
 
 const AdminLogin = () => {
+
+    const alert = useAlert();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isPending, setIsPending] = useState(false);
     const [redirects, setRedirects] = useState(false);
+    const [reload, setReload] = useState(false);
 
      const handleSubmit = (e) => {
         e.preventDefault();
@@ -30,8 +34,15 @@ const AdminLogin = () => {
             }
             else{
                 console.log(res.message);
+                alert.show(res.message);
+                setIsPending(false);
+                setReload(true);
             }
         });
+     }
+     if(reload){
+         setReload(false);
+         <Redirect to="/adminlogin"></Redirect>
      }
 
      if(!redirects){
@@ -75,7 +86,7 @@ const AdminLogin = () => {
          );
      }
      else{
-         return <Redirect to={"dashboard/admin"}></Redirect>
+            return <Redirect to={"dashboard/admin"}></Redirect>
      }
 
     

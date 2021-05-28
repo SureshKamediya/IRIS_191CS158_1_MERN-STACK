@@ -12,7 +12,7 @@ const DashMember = () => {
             console.log(member);
             console.log("I am here");
         })
-    },[member]);
+    },[]);
 
     if(member.club !== ''){
         return (  

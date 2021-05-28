@@ -1,9 +1,12 @@
 import { useState } from "react";
 import {Redirect} from 'react-router-dom';
 import { login } from "../../helpers/members";
+import { useAlert } from 'react-alert';
 
 
 const Login = () => {
+
+    const alert = useAlert();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -37,6 +40,8 @@ const Login = () => {
             }
             else{
                 console.log(res.message);
+                alert.show(res.message);
+                setIsPending(false);
             }
         });
      }

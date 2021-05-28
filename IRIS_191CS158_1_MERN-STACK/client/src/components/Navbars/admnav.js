@@ -13,7 +13,7 @@ const AdminNav = () => {
             console.log(admin);
             console.log("I am here");
         })
-    },[admin]);
+    },[]);
 
     const onLogout = (e) =>{
         logout().then(response=>{
@@ -39,8 +39,6 @@ const AdminNav = () => {
                             {admin.adminName}
                             </Link>
                             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <Link className="dropdown-item" to="/admin/profile">Profile</Link>
-                                <Link className="dropdown-item" to="/admin/changePass">Change Password</Link>
                             <div className="dropdown-divider"></div>
                                 <Link className="dropdown-item" to="/" onClick = {(e) => onLogout(e)}>Log Out</Link>
                             </div>

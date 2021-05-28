@@ -6,6 +6,7 @@ import DashAdmin from './components/dashboard/admin';
 import DashConvener from './components/dashboard/convener';
 import DashMember from './components/dashboard/member';
 import NewClub from './components/Others/addClub';
+import AllTheRequests from './components/Others/allTheRequests';
 import AllUsers from './components/Others/allUsers';
 import ClubMembers from './components/Others/clubMembers';
 import NewItem from './components/Others/User/addItem';
@@ -24,21 +25,22 @@ function App() {
         <div className="content">
           <Switch>
             <Route exact path= "/"><Register /></Route>
-            <Route path= "/login"><Login /></Route>
-            <Route path= "/adminlogin"><AdminLogin /></Route>
-            <Route path= "/dashboard/admin"><DashAdmin /></Route>
-            <Route path = "/dashboard/convener"><DashConvener /></Route>
-            <Route path = "/dashboard/member"><DashMember /></Route>
-            <Route path = "/allUsers"><AllUsers /></Route>
-            <Route path = "/addClub"><NewClub /></Route>
+            <Route exact path= "/login"><Login /></Route>
+            <Route exact path= "/adminlogin"><AdminLogin /></Route>
+            <Route exact path= "/dashboard/admin"><DashAdmin /></Route>
+            <Route exact path = "/dashboard/convener"><DashConvener /></Route>
+            <Route exact path = "/dashboard/member"><DashMember /></Route>
+            <Route exact path = "/allUsers"><AllUsers /></Route>
+            <Route exact path = "/allTheRequests"><AllTheRequests /></Route>
+            <Route exact path = "/addClub"><NewClub /></Route>
             <Route path = "/clubMembers/:id"><ClubMembers /></Route>
             <Route path = "/members/:id"><PartClubMembers /></Route>
             <Route path = "/allItems/:id"><ClubItems /></Route>
             <Route path = "/allUserItems/:id"><UserClubItems /></Route>
             <Route path = "/allRequests/:id"><AllRequests /></Route>
+            <Router exact path = "/myRequests"><MyRequests /></Router>
+            <Route exact path = "/myItems"><MemberItems /></Route>
             <Route path = "/addItem/:id"><NewItem /></Route>
-            <Route path = "/myItems"><MemberItems /></Route>
-            <Router path = "/myRequests"><MyRequests /></Router>
           </Switch>
         </div>
       </div>

@@ -21,7 +21,7 @@ const NewClub = () => {
           }
        });
 
-    },[allClubs]);
+    },[]);
 
     const handleSubmit = (e) => {
         e.preventDefault();

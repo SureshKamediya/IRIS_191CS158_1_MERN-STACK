@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { getmemberDetails } from "../../helpers/members";
-import UserNav from "../Navbars/memnav";
+import ConvNav from "../Navbars/convnav";
 
 const DashConvener = () => {
 
@@ -14,11 +14,11 @@ const DashConvener = () => {
             console.log(convener);
             console.log("I am here");
         })
-    },[convener]);
+    },[]);
 
     return (  
         <div className="dashconvener">
-            <UserNav />              
+            <ConvNav />              
             <h2 className ="mt-5 text-center">This is the convener page of {convener.club} club</h2>
             <div className="card text-center mt-5 mb-5 mx-auto" style={{width: 18 + "rem"}}>
                 <div className="card-body">

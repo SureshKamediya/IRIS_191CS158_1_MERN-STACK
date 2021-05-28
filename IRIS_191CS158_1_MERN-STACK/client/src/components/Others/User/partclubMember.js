@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { getClubMembers } from "../../../helpers/members";
-import UserNav from "../../Navbars/memnav";
+import ConvNav from "../../Navbars/convnav";
 
 const PartClubMembers = () => {
     const {id} = useParams();
@@ -18,7 +18,7 @@ const PartClubMembers = () => {
 
     return (  
         <div className="partclubmembers">
-            <UserNav />
+            <ConvNav />
             <h2 className = "text-center mt-5 mb-5"> All {id} members</h2>
             <div className="table mb-5">
                 <div className="table-header">

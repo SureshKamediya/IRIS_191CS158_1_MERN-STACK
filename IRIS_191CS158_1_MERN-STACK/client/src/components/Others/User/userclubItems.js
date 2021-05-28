@@ -29,7 +29,7 @@ const UserClubItems = () => {
             console.log(member);
             console.log("I am here");
         })
-    },[member]);
+    },[]);
 
 
     const handleClick = (item) => (e) => {

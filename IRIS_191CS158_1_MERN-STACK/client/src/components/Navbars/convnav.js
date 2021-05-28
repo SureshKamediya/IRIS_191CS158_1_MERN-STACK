@@ -3,7 +3,7 @@ import { Link} from "react-router-dom";
 import { getmemberDetails, logout } from "../../helpers/members";
 
 
-const UserNav = () => {
+const ConvNav = () => {
 
     const [member, setMember] = useState({});
     useEffect(() => {
@@ -31,7 +31,7 @@ const UserNav = () => {
                         <span className="navbar-toggler-icon"></span>
                     </button>
                     <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-                        <Link className="navbar-brand" to={"/dashboard/member"}>Tech Clubs/Dashboard</Link>
+                        <Link className="navbar-brand" to={"/dashboard/convener"}>Tech Clubs/Dashboard</Link>
                     </div>
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0 navbar-right">
                         <li className="nav-item dropdown">
@@ -39,8 +39,6 @@ const UserNav = () => {
                             {member.userName}
                             </Link>
                             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                {/* <Link className="dropdown-item" to={"/member/profile"}>Profile</Link>
-                                <Link className="dropdown-item" to={"/member/changePass"}>Change Password</Link> */}
                             <div className="dropdown-divider"></div>
                                 <Link className="dropdown-item" to="/" onClick = {(e) => onLogout(e)}>Log Out</Link>
                             </div>
@@ -52,4 +50,4 @@ const UserNav = () => {
     );
 }
  
-export default UserNav;
+export default ConvNav;

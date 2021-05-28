@@ -4,7 +4,7 @@ import { Redirect, useParams } from "react-router";
 import { getClubMemberbyId } from "../../../helpers/clubs";
 import { getItemById } from "../../../helpers/items";
 import { getAllRequests } from "../../../helpers/requests";
-import UserNav from "../../Navbars/memnav";
+import ConvNav from "../../Navbars/convnav";
 
 const AllRequests = () => {
     const {id} = useParams();
@@ -13,43 +13,50 @@ const AllRequests = () => {
     const [itemInfo, setItemInfo] = useState([]);
     const [feedback,setFeedback] = useState([]);
     const [quantityInfo, setQuantityInfo] = useState([]);
+    const [reload, setReload] = useState(false);
 
     useEffect(() => {
-        getAllRequests().then(data =>{
-         if(data.authenticated){
-             console.log(data.requests);
-             setAllRequests(data.requests);
-           }
-        });
-     },[allRequests]);
+        getAllRequests().then(isdata =>{
+        if(isdata.authenticated){
+            console.log(isdata.requests);
+            setAllRequests(isdata.requests);
 
-     useEffect(() => {
-         if(allRequests){
-            allRequests.map((request, index) => {
+            isdata.requests.map((request, index) => {
                 getItemById(request.item).then(data =>{
                     if(data.authenticated){
                         console.log(data.item);
+                        // const value1 = data.item.itemName + " - "+ data.item.quantity;
+                        // const value2 = data.item.quantity;
+                        // setItemInfo(...itemInfo,value1);
+                        // setQuantityInfo(...quantityInfo,value2);
                         const arr2 = itemInfo;
                         arr2[index] = data.item.itemName+ "-" +data.item.quantity;
                         const arr3 = quantityInfo;
                         arr3[index] = data.item.quantity; 
                         setItemInfo(arr2);
                         setQuantityInfo(arr3);
+                        setReload(true);
                     }
                 });
-    
+            });
+
+
+            isdata.requests.map((request, index) => {
                 getClubMemberbyId(request.user).then(data => {
                     if(data.authenticated){
                         console.log(data.member);
-                        const value = data.member.userName + " - " + data.member.email;
-                        const arr = memberInfo;
-                        arr[index] = value;
-                        setMemberInfo(arr);
+                        // const value3= data.member.userName + " - " + data.member.email;
+                        // setMemberInfo(...memberInfo,value3);
+                        const arr4 = memberInfo;
+                        arr4[index] = data.member.userName + " - " + data.member.email;
+                        setMemberInfo(arr4);
+                        setReload(true);
                     }
                 });
             });
         }
-     },[allRequests,memberInfo,itemInfo,quantityInfo]);
+        });
+     },[]);
 
      const updateFeedback = (index) => (e) => {
          const arr4 = feedback;
@@ -90,14 +97,20 @@ const AllRequests = () => {
         })).catch(errors => {
             console.log(errors);
         });
-        <Redirect to = {"/allRequests/"+id}></Redirect>
+
+        setReload(true);
      }
+
+    if(reload){
+        setReload(false);
+        <Redirect to={"/allRequests/"+id}></Redirect>
+    }
 
      
 
     return (  
         <div className="allrequests">
-            <UserNav />
+            <ConvNav />
             <h2 className="mt-5">All requests belong to {id} club is here. </h2>
             <div className= "mt-5 mb-5">    
                 <div className="table mb-5">
@@ -112,7 +125,7 @@ const AllRequests = () => {
                     <div className="table-body">
                         {allRequests && allRequests.map((request,index) => {
                             return ( request.club === id && request.permission === "Awaiting Approval"?
-                                <div className = "row"  key = {index}>
+                                <div className = "row"  key = {request._id}>
                                     <div className= "column">{memberInfo[index]}</div>
                                     <div className= "column">{itemInfo[index]}</div>
                                     <input 

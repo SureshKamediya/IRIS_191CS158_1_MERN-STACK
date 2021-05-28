@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Redirect } from "react-router";
 import { getItemById } from "../../../helpers/items";
 import { getmemberDetails } from "../../../helpers/members";
 import { getMyApprovedItemsId } from "../../../helpers/requests";
@@ -8,35 +9,40 @@ const MemberItems = () => {
 
     const [approvedItemsId, setApprovedItemsId] = useState([]);
     const [myItems, setMyItems] = useState([]);
+    const [reload, setReload] = useState(false);
+
     useEffect(() => {
         getmemberDetails().then(res => {
             console.log(res);
             console.log(res.data);
             console.log(res.data._id);
-            getMyApprovedItemsId(res.data._id).then(data => {
-                if(data.authenticated){
-                    console.log(data);
-                    setApprovedItemsId(data.approvedItems);
+            getMyApprovedItemsId(res.data._id).then(isdata => {
+                if(isdata.authenticated){
+                    console.log(isdata);
+                    setApprovedItemsId(isdata.approvedItems);
+                    console.log(approvedItemsId);
+                    isdata.approvedItems.map((item, index) => {
+                        getItemById(item._id).then(data =>{
+                            if(data.authenticated){
+                                console.log(data.item);
+                                const arr2 = myItems;
+                                arr2[index] = data.item.itemName; 
+                                setMyItems(arr2);
+                                setReload(true);
+                            }
+                        });
+                    });
                 }
             });
             console.log("I am here");
         })
-    },[approvedItemsId]);
+    },[]);
 
-    useEffect(() => {
-        if(approvedItemsId){
-            approvedItemsId.map((item, index) => {
-                getItemById(item._id).then(data =>{
-                    if(data.authenticated){
-                        console.log(data.item);
-                        const arr2 = myItems;
-                        arr2[index] = data.item.itemName; 
-                        setMyItems(arr2);
-                    }
-                });
-            });
-        }
-    },[approvedItemsId]);
+    if(reload){
+        setReload(false);
+        <Redirect to="/myItems"></Redirect>
+    }
+    
 
 
 
