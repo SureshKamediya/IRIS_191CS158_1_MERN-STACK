@@ -21,17 +21,19 @@ const MemberItems = () => {
                     console.log(isdata);
                     setApprovedItemsId(isdata.approvedItems);
                     console.log(approvedItemsId);
-                    isdata.approvedItems.map((item, index) => {
-                        getItemById(item._id).then(data =>{
-                            if(data.authenticated){
-                                console.log(data.item);
-                                const arr2 = myItems;
-                                arr2[index] = data.item.itemName; 
-                                setMyItems(arr2);
-                                setReload(true);
-                            }
+                    if(isdata){
+                        isdata.approvedItems.map((item, index) => {
+                            getItemById(item._id).then(data =>{
+                                if(data.authenticated){
+                                    console.log(data.item);
+                                    const arr2 = myItems;
+                                    arr2[index] = data.item.itemName; 
+                                    setMyItems(arr2);
+                                    setReload(true);
+                                }
+                            });
                         });
-                    });
+                    }
                 }
             });
             console.log("I am here");

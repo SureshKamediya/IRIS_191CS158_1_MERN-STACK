@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { getmemberDetails } from "../../helpers/members";
-import ConvNav from "../Navbars/convnav";
+import ConvNav from "../Navbars/convnav"; 
 
 const DashConvener = () => {
 

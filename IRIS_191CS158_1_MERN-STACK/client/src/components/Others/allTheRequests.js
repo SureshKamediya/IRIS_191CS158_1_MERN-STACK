@@ -67,7 +67,7 @@ const AllTheRequests = () => {
                         <div className="row">
                             <div className="column">User</div>
                             <div className="column">Item</div>
-                            <div className="column">Feedback</div>
+                            <div className="column">Club</div>
                             <div className="column">Status</div>
                         </div>
                     </div>
@@ -77,7 +77,7 @@ const AllTheRequests = () => {
                                 <div className = "row"  key = {request._id}>
                                     <div className= "column">{memberInfo[index]}</div>
                                     <div className= "column">{itemInfo[index]}</div>
-                                    <div className="column">{request.feedback}</div>
+                                    <div className="column">{request.club}</div>
                                     <div className="column">{request.permission}</div>
                                 </div>
                             );

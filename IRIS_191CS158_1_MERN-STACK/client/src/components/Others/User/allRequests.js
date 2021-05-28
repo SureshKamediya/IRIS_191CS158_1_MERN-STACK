@@ -97,6 +97,7 @@ const AllRequests = () => {
         })).catch(errors => {
             console.log(errors);
         });
+        <Redirect to ={"/allRequests/"+id}></Redirect>
 
         setReload(true);
      }

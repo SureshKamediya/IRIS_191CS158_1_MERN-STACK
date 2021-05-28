@@ -37,7 +37,7 @@ export async function getMyApprovedItemsId(userId){
     const approvedData = {
         'approvedItems':response.data.data,
     };
-    if(response.data.code === -1)
+    if(response.data.code === 0)
         approvedData.authenticated = 0;
     else
         approvedData.authenticated = 1;
@@ -53,7 +53,7 @@ export async function getAllRequestedItemsId(userId){
     const approvedData = {
         'requestedItems':response.data.data,
     };
-    if(response.data.code === -1)
+    if(response.data.code === 0)
         approvedData.authenticated = 0;
     else
         approvedData.authenticated = 1;
